@@ -1,0 +1,43 @@
+This is the pipeline that needs to be run for every catalogue:
+
+ - Start from data_fits_catalogue and random_fits_catalogue
+ containing RA, DEC, Z in deg. These are the original files provided
+ by the collaboration.
+
+ - Run fits_to_ascii.py on both fits catalogues to transform them
+ to csv files with ra, dec, z as columns, where ra and dec are
+ in radians. Products are data_ang_catalogue and random_ang_catalogue.
+
+- Run angular_to_cartesian.py on data_ang_catalogue and random_ang_catalogue
+to get the catalogues in comoving cartesian coordinates. Products are
+data_car_catalogue and random_car_catalogue.
+
+- Run generate_random_sphere.py using 5 times the number density of the
+ data catalogue. Product is random_sphere_ang
+
+ - Run generate_guard_particles.py using random_sphere_ang as an input to get
+ a catalogue of guard particles (angular and redshift caps) in angular
+   coordinates. Product is redCap_ang and angCap_ang
+
+ - Run angular_to_cartesian.py on redCap_ang and angCap_ang to get
+ redCap_car and angCap_car
+
+ - Run join_guards_and_data.py on data_car_catalogue, redCap_car and angCap_car
+ to get a joint data+guards_car catalogue.
+
+ - Run delaunay_triangulation on data+guards_car catalogue. Product is
+ data+guards_car.ver
+
+ - Run circumsphere.exe on data+guards.ver to get circumcentres of the
+ Delaunay spheres. Product data+guards_car.cen
+
+ - Run cartesian_to_angular.py on data+guards_car.cen to transform the
+ circumcentres file to angular coordinates. Product is data+guards_ang.cen
+
+ - Run filter_by_survey_mask.py on data+guards_ang.cen to keep only those
+ centres that fall within the survey region. Product is data+guards_ang.cen2
+
+ - Run angular_to_cartesian.py on data+guards_ang_in.cen. Product is
+  data+guards_car_in.cen
+
+- Run step0.exe on data+guards_car_in.cen.
