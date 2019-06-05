@@ -28,19 +28,19 @@ delaunay_cenin_ang="/home/epaillasv/data/eboss_v5/test_pipeline/void_cats/eBOSS_
 delaunay_cenin_car="/home/epaillasv/data/eboss_v5/test_pipeline/void_cats/eBOSS_ELG_clustering_NGC_v5.cenin.car.txt"
 
 
-# Convert angular fits catalogues to angular ascii catalogues
-$python $src/fits_to_ascii.py $data_ang_fits $data_ang_ascii
-$python $src/fits_to_ascii.py $random_ang_fits $random_ang_ascii
-
-# Convert angular ascii catalogues to cartesian ascii catalogues
-$python $src/angular_to_cartesian.py $data_ang_ascii $data_car_ascii
-$python $src/angular_to_cartesian.py $random_ang_ascii $random_car_ascii
-
+# # Convert angular fits catalogues to angular ascii catalogues
+# $python $src/fits_to_ascii.py $data_ang_fits $data_ang_ascii
+# $python $src/fits_to_ascii.py $random_ang_fits $random_ang_ascii
+#
+# # Convert angular ascii catalogues to cartesian ascii catalogues
+# $python $src/angular_to_cartesian.py $data_ang_ascii $data_car_ascii
+# $python $src/angular_to_cartesian.py $random_ang_ascii $random_car_ascii
+#
 # Generate random sphere with 5 times the nden of data catalogye
 $python $src/generate_random_sphere.py $random_sphere_ang $random_ang_ascii $zlo $zhi $nden
 
 # Generate angular and redshift caps with mock buffer particles
-$python $src/generate_guard_particles.py $random_ang_ascii $random_sphere_ang $redCap_ang $angCap_ang
+$python $src/generate_guard_particles.py $random_ang_ascii $random_sphere_ang $redCap_ang $angCap_ang $zlo $zhi
 
 # Convert buffer particles to cartesian coordinates
 $python $src/angular_to_cartesian.py $redCap_ang $redCap_car

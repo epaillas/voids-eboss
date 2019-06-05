@@ -2,12 +2,14 @@ import numpy as np
 import sys
 import healpy as hp
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 7:
     print('Some arguments are missing.')
     print('1) random_catalogue (in)')
     print('2) sphere_catalogue (in)')
     print('3) redshift_cap (out)')
     print('4) angular_cap (out)')
+    print('5) zlo')
+    print('6) zhi')
     sys.exit()
 
 print('----------')
@@ -17,11 +19,15 @@ random_cat = sys.argv[1]
 sphere_cat = sys.argv[2]
 redshift_cap = sys.argv[3]
 angular_cap = sys.argv[4]
+zlo = float(sys.argv[5])
+zhi = float(sys.argv[6])
 
 print('random_cat: ' + random_cat)
 print('sphere_cat: ' + sphere_cat)
 print('redshift_cap: ' + redshift_cap)
 print('angular_cap: ' + angular_cap)
+print('zlo: ' + repr(zlo))
+print('zhi: ' + repr(zhi))
 
 if '.npy' in random_cat:
     random_cat = np.load(random_cat)
@@ -57,8 +63,8 @@ ind = hp.pixelfunc.ang2pix(nside, sphere_cat[:,1], sphere_cat[:,0], nest=False)
 angCap = sphere_cat[border[ind] == 1]
 redCap = sphere_cat[mask[ind] == 1]
 
-angCap = [i for i in angCap if (0.6 < i[3] < 1.0)]
-redCap = [i for i in redCap if (0.6 < i[3] < 0.605) or (0.995 < i[3] < 1.0)]
+angCap = [i for i in angCap if (zlo < i[3] < zhi)]
+redCap = [i for i in redCap if (zlo < i[3] < zlo + 0.005) or (zhi - 0.005 < i[3] < zhi)]
 angCap = np.asarray(angCap)
 redCap = np.asarray(redCap)
 

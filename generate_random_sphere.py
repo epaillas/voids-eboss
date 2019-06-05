@@ -52,7 +52,7 @@ for i in range(npoints):
     cosdec = np.random.uniform(-1, 1)
     dec = np.arccos(cosdec)
     u = np.random.uniform(0, 1)
-    z = u ** (1/3)
+    z = zhi * u ** (1/3)
 
     if (ralo < ra < rahi) and (declo < dec < dechi) and (zlo < z < zhi):
         r = cosmo.comoving_distance(z).value
